@@ -12,7 +12,7 @@ source:
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   skip: true  # [py<36]
 
 requirements:
@@ -38,7 +38,9 @@ test:
     - pdf2txt.py -h
     - dumppdf.py -h
     - pip check
-    - pytest -vv tests
+    - pytest -vv tests  # [not win]
+    # Permission errors
+    - pytest -vv tests -k "not (test_simple1_binary or test_simple1_raw)"  # [win]
   requires:
     - pip
     - pytest
