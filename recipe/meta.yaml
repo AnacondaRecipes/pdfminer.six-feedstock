@@ -1,38 +1,47 @@
-{% set version = "20221105" %}
+{% set name = "pdfminer.six" %}
+{% set version = "20231228" %}
 
 package:
-  name: pdfminer.six
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/p/pdfminer.six/pdfminer.six-{{ version }}.tar.gz
-  sha256: 8448ab7b939d18b64820478ecac5394f482d7a79f5f7eaa7703c6c959c175e1d
+  url: https://github.com/pdfminer/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
+  sha256: 548db64879d6bef83d20654389a5d0ab4c1df496d7e13cc982c3109054f31080
+
 
 build:
   number: 0
-  noarch: python
   script: {{ PYTHON }} -m pip install . --no-deps -vv
+  skip: true  # [py<36]
 
 requirements:
   host:
-    - python >=3.6
+    - python
     - pip
+    - setuptools
+    - wheel
+    - setuptools-git-versioning <2
   run:
-    - python >=3.6
+    - python
     - cryptography >=36.0.0
     - charset-normalizer >=2.0.0
 
 test:
+  source_files:
+    - tests
+    - tools
+    - samples
   imports:
     - pdfminer
-
   commands:
     - pdf2txt.py -h
     - dumppdf.py -h
     - pip check
-
+    - pytest -vv tests
   requires:
     - pip
+    - pytest
 
 about:
   home: https://github.com/pdfminer/pdfminer.six
