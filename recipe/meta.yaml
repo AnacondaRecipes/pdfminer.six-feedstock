@@ -9,13 +9,15 @@ source:
   url: https://github.com/pdfminer/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
   sha256: 548db64879d6bef83d20654389a5d0ab4c1df496d7e13cc982c3109054f31080
   patches:
-    - 0001-setuptools-git-versioning-patch.patch
+    # patching out setup_git_requires a git repo to work
+    # the tarball is not a git repo
+    - 0001-setuptools-git-versioning..patch
 
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py>310]
+  skip: true  # [py<36]
 
 requirements:
   build:
@@ -26,13 +28,10 @@ requirements:
     - pip
     - setuptools
     - wheel
-    - setuptools-git-versioning
-    - wheel
   run:
     - python
     - cryptography >=36.0.0
     - charset-normalizer >=2.0.0
-    - setuptools-git-versioning
 
 test:
   source_files:
