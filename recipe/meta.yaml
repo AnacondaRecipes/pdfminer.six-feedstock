@@ -11,7 +11,7 @@ source:
   patches:
     # patching out setup_git_requires which requires a git repo to work properly
     # the tarball is not a git repo
-    - 0001-setuptools-git-versioning..patch
+    - 0001-setuptools-git-versioning.patch
 
 
 build:
