@@ -27,6 +27,7 @@ requirements:
     - python
     - pip
     - setuptools
+    - setuptools-git-versioning <2
     - wheel
   run:
     - python
