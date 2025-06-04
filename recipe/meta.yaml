@@ -68,6 +68,11 @@ about:
   dev_url: https://github.com/pdfminer/pdfminer.six
 
 extra:
+  anaconda-services:
+    ref: https://anaconda.zendesk.com/agent/tickets/78379
+    reason: Dependency for pdfplumber
+  recipe-maintainers:
+    - ianaobi
   recipe-maintainers:
     - pvanheus
     - estshorter
