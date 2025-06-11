@@ -1,73 +1,48 @@
 {% set name = "pdfminer.six" %}
-{% set version = "20231228" %}
+{% set version = "20250327" %}
 
 package:
-  name: {{ name }}
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/pdfminer/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 548db64879d6bef83d20654389a5d0ab4c1df496d7e13cc982c3109054f31080
-  patches:
-    # patching out setup_git_requires which requires a git repo to work properly
-    # the tarball is not a git repo
-    - 0001-setuptools-git-versioning.patch
-
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/pdfminer_six-{{ version }}.tar.gz
+  sha256: 57f6c34c2702df04cfa3191622a3db0a922ced686d35283232b00094f8914aa1
 
 build:
-  number: 1
+  noarch: python
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<36]
+  number: 0
 
 requirements:
-  build:
-    - patch                # [unix]
-    - m2-patch             # [win]
   host:
-    - python
+    - python >=3.9
+    - setuptools >=61.0
+    - setuptools-scm >=8
     - pip
-    - setuptools
-    - setuptools-git-versioning <2
-    - wheel
+    - packaging >=24.2
   run:
-    - python
-    - cryptography >=36.0.0
+    - python >=3.9
     - charset-normalizer >=2.0.0
+    - cryptography >=36.0.0
+    - packaging >=24.2
 
 test:
-  source_files:
-    - tests
-    - tools
-    - samples
   imports:
     - pdfminer
   commands:
-    - pdf2txt.py -h
-    - dumppdf.py -h
     - pip check
-    - pytest -vv tests  # [not win]
-    # Permission errors
-    - pytest -vv tests -k "not (test_simple1_binary or test_simple1_raw)"  # [win]
   requires:
     - pip
-    - pytest
 
 about:
-  home: https://github.com/pdfminer/pdfminer.six
-  license_file: LICENSE
-  license: MIT
-  license_family: MIT
   summary: PDF parser and analyzer
-  description: |
-    Pdfminer.six is a community maintained fork of the original PDFMiner. 
-    It is a tool for extracting information from PDF documents. 
-    It focuses on getting and analyzing text data. Pdfminer.six extracts 
-    the text from a page directly from the sourcecode of the PDF. 
-    It can also be used to get the exact location, font or color of the text.
-  doc_url: https://pdfminersix.readthedocs.io
-  dev_url: https://github.com/pdfminer/pdfminer.six
+  license: MIT
+  license_file: LICENSE
 
 extra:
+  anaconda-services:
+    ref: https://anaconda.zendesk.com/agent/tickets/78379
+    reason: Dependency for pdfplumber
   recipe-maintainers:
-    - pvanheus
-    - estshorter
+    - ianaobi
