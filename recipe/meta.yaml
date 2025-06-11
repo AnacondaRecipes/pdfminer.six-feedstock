@@ -15,17 +15,17 @@ build:
 
 requirements:
   host:
-    - python >=3.8
+    - python
     - pip
     - setuptools
     - wheel
     - setuptools-git-versioning <2
-    - packaging
+    - packaging >=24.2
   run:
-    - python >=3.8
+    - python
     - cryptography >=36.0.0
     - charset-normalizer >=2.0.0
-    - packaging
+    - packaging >=24.2
 
 test:
   imports:
